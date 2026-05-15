@@ -1,14 +1,13 @@
-'use client';
-'use client';
+﻿'use client';
 
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Filter, Grid, List, ChevronDown, X } from "lucide-react";
 import { GalleryGrid } from "@/components/gallery/GalleryGrid";
 import { Hero, SectionContainer, SectionTitle } from "@/components/ui";
 import { AVAILABLE_TAGS } from "@/lib/mock-tag-data";
 
-function GalleryContent() {
+export default function GalleryPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const filterRef = useRef<HTMLDivElement>(null);
@@ -47,31 +46,6 @@ function GalleryContent() {
     const newUrl = params.toString() ? `?${params.toString()}` : '/gallery';
     router.replace(newUrl, { scroll: false });
   }, [searchQuery, selectedTags, currentPage, router]);
-
-  // Handle browser back/forward navigation by syncing URL to state
-  useEffect(() => {
-    const urlQuery = searchParams.get('q') || '';
-    const urlTags = searchParams.get('tags');
-    const urlPage = searchParams.get('page');
-
-    const parsedTags = urlTags 
-      ? urlTags.split(',').filter(tag => AVAILABLE_TAGS.includes(tag))
-      : [];
-    const parsedPage = urlPage ? parseInt(urlPage, 10) : 1;
-
-    // Only update if URL differs from current state
-    if (urlQuery !== searchQuery) {
-      setSearchQuery(urlQuery);
-    }
-    if (JSON.stringify(parsedTags) !== JSON.stringify(selectedTags)) {
-      setSelectedTags(parsedTags);
-    }
-    if (parsedPage !== currentPage) {
-      setCurrentPage(parsedPage);
-    }
-    // Dependencies intentionally limited to searchParams to avoid infinite loops
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
 
   // Close filter dropdown when clicking outside
   useEffect(() => {
@@ -252,25 +226,5 @@ function GalleryContent() {
         />
       </SectionContainer>
     </div>
-  );
-}
-
-export default function GalleryPage() {
-  return (
-    <Suspense fallback={
-      <div className="page-gradient">
-        <Hero 
-          title="Photo Gallery"
-          description="Browse and discover amazing photography"
-        />
-        <SectionContainer>
-          <div className="text-center py-16">
-            <div className="text-slate-600 dark:text-slate-400">Loading gallery...</div>
-          </div>
-        </SectionContainer>
-      </div>
-    }>
-      <GalleryContent />
-    </Suspense>
   );
 }

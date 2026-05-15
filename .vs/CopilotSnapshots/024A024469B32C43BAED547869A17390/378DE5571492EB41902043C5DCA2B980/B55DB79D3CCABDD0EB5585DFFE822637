@@ -1,27 +1,10 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { Heart, Download, Share2, Eye, Tag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Photo, mockPhotos } from '@/lib/mock-photo-data';
 
-/**
- * GalleryGrid component for displaying a filterable, paginated photo gallery.
- * 
- * Current implementation uses client-side filtering with mock data.
- * 
- * FUTURE SERVER-SIDE MIGRATION:
- * When moving to server-side data fetching:
- * 1. Replace mockPhotos with a `photos` prop containing pre-filtered server data
- * 2. Remove client-side filtering logic (lines 31-43)
- * 3. Add `totalCount` prop for server-provided total count
- * 4. Pass selectedTags, searchQuery, and currentPage as API parameters
- * 5. Consider using React Server Components for initial render
- * 
- * Expected server API contract:
- * GET /api/photos?q={searchQuery}&tags={tag1,tag2}&page={currentPage}&limit={limit}
- * Response: { photos: Photo[], total: number, page: number, hasMore: boolean }
- */
 interface GalleryGridProps {
   limit?: number;
   className?: string;
@@ -30,9 +13,6 @@ interface GalleryGridProps {
   selectedTags?: string[];
   searchQuery?: string;
   currentPage?: number;
-  // Future props for server-side data:
-  // photos?: Photo[];        // Pre-filtered photos from server
-  // totalCount?: number;     // Total matching photos from server
 }
 
 export function GalleryGrid({ 
@@ -47,19 +27,18 @@ export function GalleryGrid({
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [likedPhotos, setLikedPhotos] = useState<Set<string>>(new Set());
 
-  // CLIENT-SIDE FILTERING (temporary - will be replaced by server-side filtering)
   // Filter photos based on selected tags and search query
   const filteredPhotos = mockPhotos.filter(photo => {
     // Filter by tags
     const matchesTags = selectedTags.length === 0 || 
       selectedTags.some(tag => photo.tags.includes(tag.toLowerCase()));
-
+    
     // Filter by search query
     const matchesSearch = searchQuery === "" ||
       photo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       photo.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (photo.photographer && photo.photographer.toLowerCase().includes(searchQuery.toLowerCase()));
-
+    
     return matchesTags && matchesSearch;
   });
 

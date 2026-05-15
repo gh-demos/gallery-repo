@@ -1,5 +1,4 @@
-'use client';
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -69,8 +68,6 @@ function GalleryContent() {
     if (parsedPage !== currentPage) {
       setCurrentPage(parsedPage);
     }
-    // Dependencies intentionally limited to searchParams to avoid infinite loops
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   // Close filter dropdown when clicking outside
