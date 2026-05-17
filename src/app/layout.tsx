@@ -2,12 +2,23 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
 import { Camera } from "lucide-react";
+import { ThemeToggle } from "@/components/ui";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+
+const themeInitScript = `
+(() => {
+  const storedTheme = window.localStorage.getItem("theme-preference");
+  const isDark =
+    storedTheme === "dark" ||
+    (storedTheme !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  document.documentElement.classList.toggle("dark", isDark);
+})();
+`;
 
 export const metadata: Metadata = {
   title: "Photo Gallery & Portfolio",
@@ -20,7 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body
         className={`${geistSans.variable} antialiased`}
       >
@@ -41,6 +55,7 @@ export default function RootLayout({
                 <Link href="/upload" className="nav-link">
                   Upload
                 </Link>
+                <ThemeToggle />
                 <Link href="/admin" className="btn-primary">
                   Admin
                 </Link>
