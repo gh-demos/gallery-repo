@@ -39,7 +39,7 @@ export function ThemeToggle() {
       type="button"
       onClick={handleToggle}
       className="btn-secondary p-2"
-      aria-label={mounted ? (theme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}
+      aria-label={mounted ? `Theme toggle, currently ${theme} mode` : "Toggle theme"}
     >
       {mounted && theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </button>
