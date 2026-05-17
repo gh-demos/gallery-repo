@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun, SunMoon } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 
@@ -35,7 +35,7 @@ export function ThemeToggle() {
   };
 
   const toggleIcon = !mounted
-    ? <SunMoon className="h-5 w-5" />
+    ? null
     : theme === "dark"
       ? <Sun className="h-5 w-5" />
       : <Moon className="h-5 w-5" />;

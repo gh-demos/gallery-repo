@@ -295,10 +295,21 @@ html.dark .status-draft {
   background-color: #fed7aa;
 }
 
-html.dark .icon-container-blue { background-color: #1e3a8a; }
-html.dark .icon-container-green { background-color: #14532d; }
-html.dark .icon-container-purple { background-color: #581c87; }
-html.dark .icon-container-orange { background-color: #9a3412; }
+html.dark .icon-container-blue {
+  background-color: #1e3a8a;
+}
+
+html.dark .icon-container-green {
+  background-color: #14532d;
+}
+
+html.dark .icon-container-purple {
+  background-color: #581c87;
+}
+
+html.dark .icon-container-orange {
+  background-color: #9a3412;
+}
 
 /* Hover Patterns */
 .hover-lift {
