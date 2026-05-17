@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 import { Camera } from "lucide-react";
 import { ThemeToggle } from "@/components/ui";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
@@ -13,11 +14,21 @@ const geistSans = Geist({
 
 const themeInitScript = `
 (() => {
-  const storedTheme = window.localStorage.getItem("${THEME_STORAGE_KEY}");
-  const isDark =
-    storedTheme === "dark" ||
-    (storedTheme !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
-  document.documentElement.classList.toggle("dark", isDark);
+  const root = document.documentElement;
+  let storedTheme = null;
+  let prefersDark = false;
+
+  try {
+    storedTheme = window.localStorage.getItem("${THEME_STORAGE_KEY}");
+  } catch {}
+
+  if (typeof window.matchMedia === "function") {
+    prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  const isDark = storedTheme === "dark" || (storedTheme !== "light" && prefersDark);
+  root.classList.toggle("dark", isDark);
+  root.classList.toggle("light", !isDark);
 })();
 `;
 
@@ -33,12 +44,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
       <body
         className={`${geistSans.variable} antialiased`}
       >
+        <Script id="theme-init" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
         {/* Navigation Header */}
         <header className="border-b bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-40">
           <div className="container mx-auto px-4 py-4">
