@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, SunMoon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 
@@ -41,7 +41,7 @@ export function ThemeToggle() {
       className="btn-secondary p-2"
       aria-label={mounted ? `Theme toggle, currently ${theme} mode` : "Toggle theme"}
     >
-      {mounted && theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+      {!mounted ? <SunMoon className="h-5 w-5" /> : theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </button>
   );
 }
