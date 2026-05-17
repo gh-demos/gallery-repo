@@ -34,6 +34,12 @@ export function ThemeToggle() {
     window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
   };
 
+  const toggleIcon = !mounted
+    ? <SunMoon className="h-5 w-5" />
+    : theme === "dark"
+      ? <Sun className="h-5 w-5" />
+      : <Moon className="h-5 w-5" />;
+
   return (
     <button
       type="button"
@@ -41,7 +47,7 @@ export function ThemeToggle() {
       className="btn-secondary p-2"
       aria-label={mounted ? `Theme toggle, currently ${theme} mode` : "Toggle theme"}
     >
-      {!mounted ? <SunMoon className="h-5 w-5" /> : theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+      {toggleIcon}
     </button>
   );
 }
